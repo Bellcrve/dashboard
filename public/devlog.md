@@ -51,7 +51,11 @@ $$ error = | \text{GBM Simulated Price} - \text{Black Scholes Price} | $$
 
 # Distributed Computing Architecture
 
-We hosted 10 VM's in [digital oceans](https://www.digitalocean.com/?utm_campaign=&utm_adgroup=&_keyword=digital%20ocean&_device=c&_adposition=&utm_content=&utm_medium=&utm_source=google&gad_source=1&gclid=CjwKCAjwx4O4BhAnEiwA42SbVGPd3FV9jRBghMXYhcsiOsN7E9DckmcgPRoOFcq0reL170Vf2X3faBoCasMQAvD_BwE) ecosystem, where 1 is the Master Node, 8 are worker nodes, and 1 is the scheduler. We then distributed 10,000 simulations across the 8 worker nodes and found that as our simulation converged
+We hosted 10 VM's in [digital oceans](https://www.digitalocean.com/?utm_campaign=&utm_adgroup=&_keyword=digital%20ocean&_device=c&_adposition=&utm_content=&utm_medium=&utm_source=google&gad_source=1&gclid=CjwKCAjwx4O4BhAnEiwA42SbVGPd3FV9jRBghMXYhcsiOsN7E9DckmcgPRoOFcq0reL170Vf2X3faBoCasMQAvD_BwE) ecosystem, where 1 is the Master Node, 8 are worker nodes, and 1 is the scheduler. We then distributed 10,000 simulations across the 8 worker nodes and found that as our simulation converged.
+
+## Graph to show comparision of 1 worker to multiple worker nodes
+
+![Graph](comparison_plot_workers_3D.png)
 
 # Misc
 
