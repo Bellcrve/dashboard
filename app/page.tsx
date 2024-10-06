@@ -93,11 +93,11 @@ export default function Home() {
     setIsConnecting(true);
 
     try {
-      await connect('wss://142.93.55.103:8000/ws/simulate');
-      console.log('WebSocket connection established');
+      // await connect('wss://142.93.55.103:8000/ws/simulate');
+      // console.log('WebSocket connection established');
 
-      send(simulationData);
-      console.log('Simulation data sent');
+      // send(simulationData);
+      // console.log('Simulation data sent');
 
       router.push(`/metrics`);
     } catch (error) {
