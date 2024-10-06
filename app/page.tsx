@@ -20,12 +20,12 @@ export default function Home() {
   const [ticker, setTicker] = useState('');
   const [stockData, setStockData] = useState<IStockDataProps>({
     data: {
-      ticker: '',
-      stockPrice: 0,
-      name: '',
-      currencyName: '',
-      marketCap: 0,
-      homepageUrl: '',
+      ticker: 'AAPL',
+      stockPrice: 223.45,
+      name: 'Apple Inc.',
+      currencyName: 'USD',
+      marketCap: 32849232904.24,
+      homepageUrl: 'https://www.apple.com',
     },
   });
   const [timeInterval, setTimeInterval] = useState(1);
