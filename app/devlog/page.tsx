@@ -1,8 +1,12 @@
+// pages/devlog.tsx
 'use client';
 import * as React from 'react';
 import { Header } from '../../components/Header';
-import Markdown from 'markdown-to-jsx';
+import ReactMarkdown from 'react-markdown';
 import 'github-markdown-css/github-markdown-light.css';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 
 export interface IDevlogPageProps {}
 
@@ -11,9 +15,17 @@ function DevlogPage(props: IDevlogPageProps) {
 
   React.useEffect(() => {
     const getMarkdownFileData = async () => {
-      const response = await fetch('/logs/devlog.md');
-      const data = await response.text();
-      setMarkdownData(data);
+      try {
+        const response = await fetch('/logs/devlog.md');
+        if (!response.ok) {
+          throw new Error('Failed to fetch markdown file.');
+        }
+        const data = await response.text();
+        setMarkdownData(data);
+      } catch (error) {
+        console.error(error);
+        setMarkdownData('Failed to load developer logs.');
+      }
     };
 
     getMarkdownFileData();
@@ -24,10 +36,15 @@ function DevlogPage(props: IDevlogPageProps) {
       <main className="mt-24">
         <Header title="Developer Logs" />
         <div className="markdown-body py-24">
-          <Markdown>{markdownData}</Markdown>
+          <ReactMarkdown
+            children={markdownData}
+            remarkPlugins={[remarkMath]}
+            rehypePlugins={[rehypeKatex]}
+          />
         </div>
       </main>
     </div>
   );
 }
+
 export default DevlogPage;
