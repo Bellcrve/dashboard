@@ -108,7 +108,7 @@ export default function Home() {
 
   return (
     <div className="h-screen w-screen bg-primary">
-      <div className="mx-auto h-screen w-2/3 font-outfit text-primary-text">
+      <div className="mx-auto mt-12 h-screen w-2/3 font-outfit text-primary-text">
         <main className="-mr-24 flex h-3/4 flex-col justify-between pt-24">
           <Header title="Run Simulations" />
           <div className="flex w-full flex-row items-start justify-between gap-12">

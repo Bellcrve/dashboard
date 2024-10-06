@@ -3,10 +3,10 @@ import './globals.css';
 import { PrimeReactProvider } from 'primereact/api';
 import 'primereact/resources/themes/viva-light/theme.css';
 import { WebSocketProvider } from '@/context/WebSocketContext';
-
+import { Logo } from '@/components/Logo';
 export const metadata = {
-  title: 'Distributed Monte Carlo Options Pricing',
-  description: 'Run simulations on multiple computers.',
+  title: 'bellcrve',
+  description: 'Distributed Monte Carlo Options Pricing',
 };
 
 export default function RootLayout({
@@ -20,6 +20,7 @@ export default function RootLayout({
         <WebSocketProvider>
           <PrimeReactProvider>
             <Navbar />
+            <Logo color="white" />
             {children}
           </PrimeReactProvider>
         </WebSocketProvider>

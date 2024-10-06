@@ -103,7 +103,7 @@ function MetricsPage(props: IMetricsPageProps) {
 
   return (
     <div className="text-secondary-text h-screen w-screen overflow-scroll bg-white">
-      <div className="mx-auto flex h-screen w-2/3 flex-col font-outfit text-primary-text">
+      <div className="mx-auto mt-12 flex h-screen w-2/3 flex-col font-outfit text-primary-text">
         <main className="mt-24">
           <Header className="text-secondary-text" title="Metrics" />
           <div className="w-full pt-16">
