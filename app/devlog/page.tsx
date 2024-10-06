@@ -16,7 +16,7 @@ function DevlogPage(props: IDevlogPageProps) {
   React.useEffect(() => {
     const getMarkdownFileData = async () => {
       try {
-        const response = await fetch('/logs/devlog.md');
+        const response = await fetch('/devlog.md');
         if (!response.ok) {
           throw new Error('Failed to fetch markdown file.');
         }
