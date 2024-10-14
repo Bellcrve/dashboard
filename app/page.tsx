@@ -64,22 +64,12 @@ export default function Home() {
     price: number;
   }
 
-  interface StockData {
-    data: {
-      currencyName: string;
-      marketCap: number;
-      homepageUrl: string;
-      stockPrice: number;
-      [key: string]: any;
-    };
-  }
-
   const searchStock = async (): Promise<void> => {
     try {
       const stockMetadata = await fetchStockMetadata(ticker);
 
       if (stockMetadata) {
-        const stockData: StockData = {
+        const stockData: IStockDataProps = {
           data: {
             ...stockMetadata,
             currencyName: stockMetadata.currency_name,
