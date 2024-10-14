@@ -34,25 +34,125 @@ export default function Home() {
   const [simulations, setSimulations] = useState(0);
   const [isConnecting, setIsConnecting] = useState(false);
 
-  const searchStock = async () => {
-    const fetchURL = `https://142.93.55.103:8000/stocks/search?stock_symbol=${ticker}`;
+  //   const searchStock = async () => {
+  //     const fetchURL = `https://142.93.55.103:8000/stocks/search?stock_symbol=${ticker}`;
 
+  //     try {
+  //       const response = await fetch(fetchURL);
+  //       const data = await response.json();
+  //       setStockData({
+  //         data: {
+  //           ...data,
+  //           currencyName: data.currency_name,
+  //           marketCap: data.market_cap,
+  //           homepageUrl: data.homepage_url,
+  //           stockPrice: data.price,
+  //         },
+  //       });
+  //     } catch (error) {
+  //       console.error('Error fetching stock data:', error);
+  //     }
+  //   };
+
+  /** TEMP */
+  interface StockMetadata {
+    ticker: string;
+    name: string;
+    currency_name: string;
+    market_cap: number;
+    homepage_url: string;
+    price: number;
+  }
+
+  interface StockData {
+    data: {
+      currencyName: string;
+      marketCap: number;
+      homepageUrl: string;
+      stockPrice: number;
+      [key: string]: any;
+    };
+  }
+
+  const searchStock = async (): Promise<void> => {
     try {
-      const response = await fetch(fetchURL);
-      const data = await response.json();
-      setStockData({
-        data: {
-          ...data,
-          currencyName: data.currency_name,
-          marketCap: data.market_cap,
-          homepageUrl: data.homepage_url,
-          stockPrice: data.price,
-        },
-      });
+      const stockMetadata = await fetchStockMetadata(ticker);
+
+      if (stockMetadata) {
+        const stockData: StockData = {
+          data: {
+            ...stockMetadata,
+            currencyName: stockMetadata.currency_name,
+            marketCap: stockMetadata.market_cap,
+            homepageUrl: stockMetadata.homepage_url,
+            stockPrice: stockMetadata.price,
+          },
+        };
+        setStockData(stockData);
+      } else {
+        console.error('Error: No stock data returned');
+      }
     } catch (error) {
       console.error('Error fetching stock data:', error);
     }
   };
+
+  async function fetchStockMetadata(
+    symbol: string
+  ): Promise<StockMetadata | null> {
+    const POLYGON_API_KEY = 'PPaigrFpVE8lYznpPC7MipDn89Lt90Rz';
+
+    const yesterdayDate = new Date();
+    yesterdayDate.setDate(yesterdayDate.getDate() - 3);
+    const formattedDate = yesterdayDate.toISOString().split('T')[0];
+
+    const apiUrl = `https://api.polygon.io/v3/reference/tickers/${symbol}`;
+    const tickerPriceUrl = `https://api.polygon.io/v1/open-close/${symbol}/${formattedDate}`;
+
+    const params = {
+      apiKey: POLYGON_API_KEY,
+    };
+
+    try {
+      const [response, priceResponse] = await Promise.all([
+        fetch(`${apiUrl}?apiKey=${params.apiKey}`),
+        fetch(`${tickerPriceUrl}?apiKey=${params.apiKey}`),
+      ]);
+
+      if (response.ok && priceResponse.ok) {
+        const data = await response.json();
+        const priceData = await priceResponse.json();
+
+        const filterData = [
+          'ticker',
+          'name',
+          'currency_name',
+          'market_cap',
+          'homepage_url',
+        ];
+        const metadata = filterData.reduce(
+          (obj: Partial<StockMetadata>, key: string) => {
+            if (data.results && data.results[key]) {
+              obj[key as keyof StockMetadata] = data.results[key];
+            }
+            return obj;
+          },
+          {} as StockMetadata
+        );
+
+        metadata.price = priceData.close;
+        return metadata as StockMetadata;
+      } else {
+        console.error('Error fetching data:', await response.text());
+        return null;
+      }
+    } catch (error) {
+      console.error('Error occurred:', error);
+      return null;
+    }
+  }
+
+  /** TEMP END */
 
   const calculateStrikePrices = (
     _stockPrice: number,
@@ -119,13 +219,13 @@ export default function Home() {
                 </span>
                 <div className="flex w-full flex-row items-center justify-between gap-3">
                   <InputText
-                    className="text-secondary-text grow rounded px-4 py-3 text-xl outline-none"
+                    className="grow rounded px-4 py-3 text-xl text-secondary-text outline-none"
                     value={ticker}
                     onChange={(e) => setTicker(e.target.value.toUpperCase())}
                   />
                   <button
                     onClick={searchStock}
-                    className="text-secondary-text flex h-full items-center justify-center rounded bg-white px-3 font-medium"
+                    className="flex h-full items-center justify-center rounded bg-white px-3 font-medium text-secondary-text"
                   >
                     Search
                   </button>
