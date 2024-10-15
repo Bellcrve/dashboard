@@ -93,7 +93,7 @@ export default function Home() {
     const POLYGON_API_KEY = 'PPaigrFpVE8lYznpPC7MipDn89Lt90Rz';
 
     const yesterdayDate = new Date();
-    yesterdayDate.setDate(yesterdayDate.getDate() - 3);
+    yesterdayDate.setDate(yesterdayDate.getDate() - 4);
     const formattedDate = yesterdayDate.toISOString().split('T')[0];
 
     const apiUrl = `https://api.polygon.io/v3/reference/tickers/${symbol}`;
