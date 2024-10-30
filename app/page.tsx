@@ -92,9 +92,23 @@ export default function Home() {
   ): Promise<StockMetadata | null> {
     const POLYGON_API_KEY = 'PPaigrFpVE8lYznpPC7MipDn89Lt90Rz';
 
+    // Function to adjust the date to the last available weekday
+    function getLastWorkingDate(date: Date): Date {
+      let day = date.getDay();
+      if (day === 0) {
+        // Sunday, go back to Friday
+        date.setDate(date.getDate() - 3);
+      } else if (day === 6) {
+        // Saturday, go back to Friday
+        date.setDate(date.getDate() - 2);
+      }
+      return date;
+    }
+
     const yesterdayDate = new Date();
     yesterdayDate.setDate(yesterdayDate.getDate() - 3);
-    const formattedDate = yesterdayDate.toISOString().split('T')[0];
+    const lastWorkingDate = getLastWorkingDate(yesterdayDate);
+    const formattedDate = lastWorkingDate.toISOString().split('T')[0];
 
     const apiUrl = `https://api.polygon.io/v3/reference/tickers/${symbol}`;
     const tickerPriceUrl = `https://api.polygon.io/v1/open-close/${symbol}/${formattedDate}`;
